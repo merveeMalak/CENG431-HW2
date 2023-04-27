@@ -1,12 +1,17 @@
 package sensorPackage;
 
-import java.util.Random;
+import mediatorPackage.Mediator;
+
 
 public class LightSensor implements ISensor {
+    Mediator mediator;
+
+    public LightSensor(Mediator mediator) {
+        this.mediator = mediator;
+    }
 
     @Override
     public int sendValue() {
-        Random rand = new Random();
-        return rand.nextInt(2);
+        return this.mediator.getIsLightOn();
     }
 }

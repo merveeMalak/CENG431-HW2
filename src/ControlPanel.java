@@ -28,4 +28,9 @@ public class ControlPanel {
         Command command = new Command(1, Types.Door);
         mediator.handleCommand(command);
     }
+
+    void setTemperature(int desiredTemperature) {
+        Command command = new Command(desiredTemperature, Types.Temperature);
+        mediator.handleCommand(command);
+    }
 }

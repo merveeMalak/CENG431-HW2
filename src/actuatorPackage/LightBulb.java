@@ -6,12 +6,12 @@ import mediatorPackage.Mediator;
 public class LightBulb implements IActuator {
     Mediator mediator;
 
-    public LightBulb(Mediator mediator){
+    public LightBulb(Mediator mediator) {
         this.mediator = mediator;
     }
 
     @Override
     public void perform(ICommand command) {
-
+        this.mediator.setIsLightOn(command.getValue());
     }
 }
