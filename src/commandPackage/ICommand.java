@@ -1,9 +1,7 @@
 package commandPackage;
 
-public interface ICommand {
-    int getValue();
+public interface ICommand<T> {
+    T getValue();
 
     Types getType();
-
-    void setValue(int newValue);
 }

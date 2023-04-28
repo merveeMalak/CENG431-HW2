@@ -1,17 +1,17 @@
 package actuatorPackage;
 
-import commandPackage.ICommand;
-import mediatorPackage.Mediator;
+import commandPackage.TemperatureCommand;
+import roomPackage.Room;
 
-public class Thermostat implements IActuator {
-    Mediator mediator;
+public class Thermostat implements IActuator<TemperatureCommand> {
+    Room room;
 
-    public Thermostat(Mediator mediator) {
-        this.mediator = mediator;
+    public Thermostat(Room room) {
+        this.room = room;
     }
 
     @Override
-    public void perform(ICommand command) {
-        this.mediator.setCurrentTemperature(command.getValue());
+    public void perform(TemperatureCommand command) {
+        this.room.setCurrentTemperature(command.getValue());
     }
 }

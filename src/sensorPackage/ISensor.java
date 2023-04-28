@@ -1,5 +1,5 @@
 package sensorPackage;
 
-public interface ISensor {
-    int sendValue();
+public interface ISensor<T> {
+    T sendValue();
 }

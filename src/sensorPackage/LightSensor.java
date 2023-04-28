@@ -1,17 +1,16 @@
 package sensorPackage;
 
-import mediatorPackage.Mediator;
+import roomPackage.Room;
 
+public class LightSensor implements ISensor<Boolean> {
+    private final Room room;
 
-public class LightSensor implements ISensor {
-    Mediator mediator;
-
-    public LightSensor(Mediator mediator) {
-        this.mediator = mediator;
+    public LightSensor(Room room) {
+        this.room = room;
     }
 
     @Override
-    public int sendValue() {
-        return this.mediator.getIsLightOn();
+    public Boolean sendValue() {
+        return this.room.getIsLightOn();
     }
 }

@@ -1,16 +1,16 @@
 package sensorPackage;
 
-import mediatorPackage.Mediator;
+import roomPackage.Room;
 
-public class MotionSensor implements ISensor {
-    Mediator mediator;
+public class MotionSensor implements ISensor<Boolean> {
+    private final Room room;
 
-    public MotionSensor(Mediator mediator) {
-        this.mediator = mediator;
+    public MotionSensor(Room room) {
+        this.room = room;
     }
 
     @Override
-    public int sendValue() {
-        return this.mediator.getIsDoorOpen();
+    public Boolean sendValue() {
+        return this.room.getIsDoorOpen();
     }
 }

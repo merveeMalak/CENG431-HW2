@@ -1,19 +1,17 @@
 package sensorPackage;
 
-import mediatorPackage.Mediator;
+import roomPackage.Room;
 
-import java.util.Random;
+public class TemperatureSensor implements ISensor<Integer> {
+    private final Room room;
 
-public class TemperatureSensor implements ISensor {
-    Mediator mediator;
-
-    public TemperatureSensor(Mediator mediator) {
-        this.mediator = mediator;
+    public TemperatureSensor(Room room) {
+        this.room = room;
     }
 
     @Override
-    public int sendValue() {
-        return this.mediator.getCurrentTemperature();
+    public Integer sendValue() {
+        return this.room.getCurrentTemperature();
     }
 
 }

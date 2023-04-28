@@ -1,17 +1,17 @@
 package actuatorPackage;
 
-import commandPackage.ICommand;
-import mediatorPackage.Mediator;
+import commandPackage.LightCommand;
+import roomPackage.Room;
 
-public class LightBulb implements IActuator {
-    Mediator mediator;
+public class LightBulb implements IActuator<LightCommand> {
+    Room room;
 
-    public LightBulb(Mediator mediator) {
-        this.mediator = mediator;
+    public LightBulb(Room room) {
+        this.room = room;
     }
 
     @Override
-    public void perform(ICommand command) {
-        this.mediator.setIsLightOn(command.getValue());
+    public void perform(LightCommand command) {
+        this.room.setIsLightOn(command.getValue());
     }
 }

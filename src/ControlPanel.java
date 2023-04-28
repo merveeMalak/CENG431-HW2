@@ -1,5 +1,4 @@
-import commandPackage.Command;
-import commandPackage.Types;
+import commandPackage.*;
 import mediatorPackage.Mediator;
 
 public class ControlPanel {
@@ -9,28 +8,43 @@ public class ControlPanel {
         this.mediator = new Mediator();
     }
 
-    void turnOffLights() {
-        Command command = new Command(0, Types.Light);
-        mediator.handleCommand(command);
+    public void turnOffLights() {
+        LightCommand lightCommand = new LightCommand(false);
+        mediator.handleCommand(lightCommand);
     }
 
-    void turnOnLights() {
-        Command command = new Command(1, Types.Light);
-        mediator.handleCommand(command);
+    public void turnOnLights() {
+        LightCommand lightCommand = new LightCommand(true);
+        mediator.handleCommand(lightCommand);
     }
 
-    void lockDoor() {
-        Command command = new Command(0, Types.Door);
-        mediator.handleCommand(command);
+    public void lockDoor() {
+        DoorCommand doorCommand = new DoorCommand(false);
+        mediator.handleCommand(doorCommand);
     }
 
-    void unlockDoor() {
-        Command command = new Command(1, Types.Door);
-        mediator.handleCommand(command);
+    public void unlockDoor() {
+        DoorCommand doorCommand = new DoorCommand(true);
+        mediator.handleCommand(doorCommand);
     }
 
-    void setTemperature(int desiredTemperature) {
-        Command command = new Command(desiredTemperature, Types.Temperature);
-        mediator.handleCommand(command);
+    public void holdTemperature() {
+        int desiredTemperature = 0;
+        int currentTemperature = this.mediator.transferValueFromTemperatureSensor();
+        if (currentTemperature > 25) {
+            desiredTemperature = 25;
+        } else if (currentTemperature < 20) {
+            desiredTemperature = 20;
+        }
+        if (desiredTemperature != 0) {
+            TemperatureCommand temperatureCommand = new TemperatureCommand(desiredTemperature);
+            System.out.printf("Control Panel set temperature: %s°C\n", desiredTemperature);
+            this.mediator.handleCommand(temperatureCommand);
+        }
     }
+
+    public void printStatus() {
+        System.out.printf("Light: %s | Door: %s | Temperature: %s°C\n", this.mediator.transferValueFromLightSensor() ? "On" : "Off", this.mediator.transferValueFromMotionSensor() ? "Unlocked" : "Locked", this.mediator.transferValueFromTemperatureSensor());
+    }
+
 }

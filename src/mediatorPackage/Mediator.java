@@ -3,95 +3,57 @@ package mediatorPackage;
 import actuatorPackage.DoorLock;
 import actuatorPackage.LightBulb;
 import actuatorPackage.Thermostat;
-import commandPackage.Command;
-import commandPackage.ICommand;
-import commandPackage.Types;
+import commandPackage.*;
+import roomPackage.Room;
 import sensorPackage.LightSensor;
 import sensorPackage.MotionSensor;
 import sensorPackage.TemperatureSensor;
 
 
 public class Mediator {
-    private int isDoorOpen;
-    private int isLightOn;
-    private int currentTemperature;
+    private final LightSensor lightSensor;
+    private final TemperatureSensor temperatureSensor;
+    private final MotionSensor motionSensor;
 
-    LightSensor lightSensor;
-    TemperatureSensor temperatureSensor;
-    MotionSensor motionSensor;
+    private final DoorLock doorLock;
+    private final LightBulb lightBulb;
+    private final Thermostat thermostat;
 
-    DoorLock doorLock;
-    LightBulb lightBulb;
-    Thermostat thermostat;
+    private final Room room;
 
     public Mediator() {
-        this.isDoorOpen = 0;
-        this.isLightOn = 0;
-        this.currentTemperature = 20;
+        this.room = new Room(this);
+        this.lightSensor = new LightSensor(this.room);
+        this.temperatureSensor = new TemperatureSensor(this.room);
+        this.motionSensor = new MotionSensor(this.room);
 
-        this.lightSensor = new LightSensor(this);
-        this.temperatureSensor = new TemperatureSensor(this);
-        this.motionSensor = new MotionSensor(this);
-
-        this.doorLock = new DoorLock(this);
-        this.lightBulb = new LightBulb(this);
-        this.thermostat = new Thermostat(this);
+        this.doorLock = new DoorLock(this.room);
+        this.lightBulb = new LightBulb(this.room);
+        this.thermostat = new Thermostat(this.room);
     }
 
     public void handleCommand(ICommand command) {
         switch (command.getType()) {
-            case Door -> doorLock.perform(command);
-            case Light -> lightBulb.perform(command);
-            case Temperature -> thermostat.perform(command);
+            case Door -> doorLock.perform((DoorCommand) command);
+            case Light -> lightBulb.perform((LightCommand) command);
+            case Temperature -> thermostat.perform((TemperatureCommand) command);
         }
     }
 
-    public void getValuesFromSensors() {
-        isLightOn = lightSensor.sendValue();
-        isDoorOpen = motionSensor.sendValue();
-        currentTemperature = temperatureSensor.sendValue();
+    public boolean transferValueFromLightSensor() {
+        return lightSensor.sendValue();
     }
 
-    public boolean isInTemperatureRange() {
-        int desiredTemperature = 0;
-        if (this.currentTemperature > 25) {
-            desiredTemperature = 25;
-        } else if (this.currentTemperature < 20) {
-            desiredTemperature = 20;
-        }
-        if (desiredTemperature != 0) {
-            Command holdCommand = new Command(desiredTemperature, Types.Temperature);
-            System.out.printf("Mediator set temperature: %s°C\n", desiredTemperature);
-            handleCommand(holdCommand);
-        }
-        return desiredTemperature == 0;
+    public boolean transferValueFromMotionSensor() {
+        return motionSensor.sendValue();
     }
 
-    public void printStatus() {
-        System.out.printf("Light: %s | Door: %s | Temperature: %s°C\n", this.isLightOn == 0 ? "Off" : "On", this.isDoorOpen == 0 ? "Locked" : "Unlocked", this.currentTemperature);
+    public int transferValueFromTemperatureSensor() {
+        return temperatureSensor.sendValue();
     }
 
-    public void setCurrentTemperature(int currentTemperature) {
-        this.currentTemperature = currentTemperature;
+    public Room getRoom() {
+        return this.room;
     }
 
-    public void setIsDoorOpen(int isDoorOpen) {
-        this.isDoorOpen = isDoorOpen;
-    }
-
-    public void setIsLightOn(int isLightOn) {
-        this.isLightOn = isLightOn;
-    }
-
-    public int getCurrentTemperature() {
-        return currentTemperature;
-    }
-
-    public int getIsDoorOpen() {
-        return isDoorOpen;
-    }
-
-    public int getIsLightOn() {
-        return isLightOn;
-    }
 }

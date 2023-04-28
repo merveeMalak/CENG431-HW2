@@ -1,17 +1,17 @@
 package actuatorPackage;
 
-import commandPackage.ICommand;
-import mediatorPackage.Mediator;
+import commandPackage.DoorCommand;
+import roomPackage.Room;
 
-public class DoorLock implements IActuator {
-    Mediator mediator;
+public class DoorLock implements IActuator<DoorCommand> {
+    Room room;
 
-    public DoorLock(Mediator mediator) {
-        this.mediator = mediator;
+    public DoorLock(Room room) {
+        this.room = room;
     }
 
     @Override
-    public void perform(ICommand command) {
-        this.mediator.setIsDoorOpen(command.getValue());
+    public void perform(DoorCommand command) {
+        this.room.setIsDoorOpen(command.getValue());
     }
 }

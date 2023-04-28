@@ -2,6 +2,6 @@ package actuatorPackage;
 
 import commandPackage.ICommand;
 
-public interface IActuator {
-    void perform(ICommand command);
+public interface IActuator<T> {
+    void perform(T command);
 }
