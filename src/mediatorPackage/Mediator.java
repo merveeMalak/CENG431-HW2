@@ -33,6 +33,7 @@ public class Mediator {
     }
 
     public void handleCommand(ICommand command) {
+        // We're getting the command type, and we decide an actuator that perform this command according to its type.
         switch (command.getType()) {
             case Door -> doorLock.perform((DoorCommand) command);
             case Light -> lightBulb.perform((LightCommand) command);

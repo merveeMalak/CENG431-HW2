@@ -6,6 +6,7 @@ import java.util.Random;
 
 
 public class Room implements IRoom {
+    // Setting limits the capability of the temperature change
     private final int POSSIBLE_MAX_TEMPERATURE = 30;
     private final int POSSIBLE_MIN_TEMPERATURE = 15;
 
@@ -17,6 +18,8 @@ public class Room implements IRoom {
 
     public Room(Mediator mediator) {
         this.mediator = mediator;
+
+        // Initial Room Values
         this.isDoorOpen = false;
         this.isLightOn = false;
         this.currentTemperature = 0;
